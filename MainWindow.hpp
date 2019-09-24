@@ -6,6 +6,8 @@
 #define MAINWINDOW_HPP
 
 #include <QMainWindow>
+#include <QTime>
+#include <QTimer>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -21,6 +23,23 @@ public:
 
 private:
     Ui::MainWindow *ui;
+
+    /** This timer is called each second and refreshes the displayed time. */
+    QTimer _timerSeconds;
+
+    /** Tell whether seconds timer is currently running. */
+    bool _isTimerRunning = false;
+    /** How many time elapsed since chronometer start. */
+    QTime _timeElapsed;
+
+    /** Called when "task name" line edit text is modified. */
+    void _slotLineEditTaskNameTextChanged(const QString &referenceText);
+
+    /** Called when seconds timer times out. */
+    void _slotTimerSecondsTimeout();
+
+    /** Called when "play" push button is pressed. */
+    void _slotPushButtonPlayPressed();
 };
 
 #endif // MAINWINDOW_HPP
