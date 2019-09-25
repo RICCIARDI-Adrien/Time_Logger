@@ -40,6 +40,8 @@ private:
 
     /** Called when "play" push button is pressed. */
     void _slotPushButtonPlayPressed();
+    /** Called when "reset" push button is pressed. */
+    void _slotPushButtonResetPressed();
 };
 
 #endif // MAINWINDOW_HPP

@@ -3,6 +3,7 @@
  * @author Adrien RICCIARDI
  */
 #include <MainWindow.hpp>
+#include <QMessageBox>
 #include <QTime>
 #include <ui_MainWindow.h>
 
@@ -16,6 +17,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->lineEditTaskName, &QLineEdit::textChanged, this, &MainWindow::_slotLineEditTaskNameTextChanged);
     connect(&_timerSeconds, &QTimer::timeout, this, &MainWindow::_slotTimerSecondsTimeout);
     connect(ui->pushButtonPlay, &QPushButton::pressed, this, &MainWindow::_slotPushButtonPlayPressed);
+    connect(ui->pushButtonReset, &QPushButton::pressed, this, &MainWindow::_slotPushButtonResetPressed);
 
     // Configure seconds counting timer
     _timerSeconds.setInterval(1000);
@@ -82,4 +84,18 @@ void MainWindow::_slotPushButtonPlayPressed()
 
     // Append log message to the list
     ui->listWidgetLog->addItem(logMessage);
+}
+
+void MainWindow::_slotPushButtonResetPressed()
+{
+    // Ask the user for confirmation
+    if (QMessageBox::question(this, tr("Confirmation"), tr("Do you want to reset everything?"), QMessageBox::Yes | QMessageBox::No, QMessageBox::No) != QMessageBox::Yes) return;
+
+    // Stop chronometer if it is running
+    if (_isTimerRunning) _slotPushButtonPlayPressed();
+
+    // Reset user interface
+    ui->labelTime->setText(tr("00:00:00")); // Clear displayed time
+    ui->lineEditTaskName->clear(); // Clear task name
+    ui->listWidgetLog->clear(); // Clear log messages
 }
